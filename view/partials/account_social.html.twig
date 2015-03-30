@@ -1,0 +1,135 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{{parent()}} / account / social{% endblock %}
+
+ {% block opengraph_meta %}
+  		{{parent()}}
+		<meta property="og:title" content="RishiSatsangi.com  / Art / {{data.name}}">
+		<meta property="og:description" content="{{data.description|striptags}}">
+  {% endblock %} 
+
+{% block body %}
+	{{ parent() }}
+    <div class="clearfix"></div>
+    
+	<div class="row" >
+		<a href="{{instagram_login_url}}" class="btn btn-large btn-primary"><span class="glyphicon glyphicon-link"></span> Instagram Connect</a>
+	</div>
+	{% for instagram in social.instagram %}
+	<div class="media well">
+	  <a class="pull-left" href="#">
+	    <img class="media-object" src="{{instagram._data.profile_picture}}" alt="...">
+	  </a>
+	  <div class="media-body">
+	    <h4 class="media-heading">@{{instagram._data.username}}</h4>
+	    connected: {{instagram.date_updated.date}}<br />
+	    media: {{instagram._data.counts.media}}<br />
+	    followers: {{instagram._data.counts.followed_by}}<br />
+	    following: {{instagram._data.counts.follows}}<br />
+	    <a href="#" class="btn btn-default btn-xs remove" data-id="{{instagram.id}}" data-type="instagram">Remove</a>
+	  </div>
+	</div>
+	{% endfor %}
+
+	<div class="row" >
+		<a href="/social/auth/flickr" class="btn btn-large btn-primary"><span class="glyphicon glyphicon-link"></span> Flickr Connect</a>
+	</div>
+	{% for flickr in social.flickr %}
+	<div class="media well">
+	  <a class="pull-left" href="#">
+	    <img class="media-object" src="http://farm{{flickr.iconfarm}}.staticflickr.com/{{flickr.iconserver}}/buddyicons/{{flickr.nsid}}.jpg" alt="...">
+	  </a>
+	  <div class="media-body">
+	    <h4 class="media-heading">@{{flickr._data.username}}</h4>
+	    connected: {{flickr.date_updated.date}}<br />
+	    photos: {{flickr._data.photos.count}}<br />
+	    views: {{flickr._data.photos.views}}<br />
+	    <a href="#" class="btn btn-default btn-xs remove" data-id="{{flickr.id}}" data-type="flickr">Remove</a>
+	  </div>
+	</div>
+	{% endfor %}
+
+	<div class="row" >
+		<a href="/social/auth/foursquare" class="btn btn-large btn-primary"><span class="glyphicon glyphicon-link"></span> Foursquare Connect</a>
+	</div>
+
+
+	{% for foursquare in social.foursquare %}
+	<div class="media well">
+	  <a class="pull-left" href="#">
+	    <img class="media-object" src="{{foursquare._data.user.photo.prefix}}150x150{{foursquare._data.user.photo.suffix}}" alt="...">
+	  </a>
+	  <div class="media-body">
+	    <h4 class="media-heading">@{{foursquare._data.user.firstName}} {{foursquare._data.user.lastName}}</h4>
+	    connected: {{foursquare.date_updated.date}}<br />
+	    friends: {{foursquare._data.user.friends.count}}<br />
+	    following: {{foursquare._data.user.following.count}}<br />
+	    badges: {{foursquare._data.user.badges.count}}<br />
+	    mayorships: {{foursquare._data.user.mayorships.count}}<br />
+	    checkins: {{foursquare._data.user.checkins.count}}<br />
+	    tips: {{foursquare._data.user.tips.count}}<br />
+	    <a href="#" class="btn btn-default btn-xs remove" data-id="{{foursquare.id}}" data-type="foursquare">Remove</a>
+	  </div>
+	</div>
+	{% endfor %}
+
+
+	<div class="row" >
+		<a href="/social/auth/github" class="btn btn-large btn-primary"><span class="glyphicon glyphicon-link"></span> Github Connect</a>
+	</div>
+
+	{% for github in social.github %}
+	<div class="media well">
+	  <!-- <pre>{{github|print_r}}</pre> -->
+	  <a class="pull-left" href="#">
+	    <img class="media-object" src="{{github._data.avatar_url}}" alt="..." width="150">
+	  </a>
+	  <div class="media-body">
+	    <h4 class="media-heading">@{{github._data.login}}</h4>
+	    connected: {{github.date_updated.date}}<br />
+	    <a href="#" class="btn btn-default btn-xs remove" data-id="{{github.id}}" data-type="github">Remove</a>
+	  </div>
+	</div>
+	{% endfor %}	
+
+
+
+	<div class="row" >
+		<a href="/social/auth/twitter" class="btn btn-large btn-primary"><span class="glyphicon glyphicon-link"></span> Twitter Connect</a>
+	</div>
+
+	{% for twitter in social.twitter %}
+	<div class="media well">
+	  <!-- <pre>{{twitter|print_r}}</pre> -->
+	  <a class="pull-left" href="#">
+	    <img class="media-object" src="{{twitter._data.profile_image_url}}" alt="..." width="150">
+	  </a>
+	  <div class="media-body">
+	    <h4 class="media-heading">@{{twitter._data.name}}</h4>
+	    connected: {{twitter.date_updated.date}}<br />
+	    <a href="#" class="btn btn-default btn-xs remove" data-id="{{twitter.id}}" data-type="twitter">Remove</a>
+	  </div>
+	</div>
+	{% endfor %}	
+
+
+	<script>
+		$(document).ready(function(){
+			$('.remove').click(function(){
+				var del = confirm("Really remove this account?\n- This will also delete all associated data");
+				if(del===true){
+					$('#delete_form #id').val($(this).attr('data-id'));
+					$('#delete_form #type').val($(this).attr('data-type'));
+					$('#delete_form').submit();
+				}
+			});
+		});
+	</script>
+	<form action="/account/social/delete" method="post" id="delete_form" name="delete_form">
+		<input type="hidden" name="id" id="id" />
+		<input type="hidden" name="type" id="type" />
+	</form>
+{% endblock %}
+
+
+

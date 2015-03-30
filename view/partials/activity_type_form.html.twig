@@ -1,0 +1,71 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{{parent()}} / activity type / add{% endblock %}
+
+ {% block opengraph_meta %}
+  		{{parent()}}
+		<meta property="og:title" content="RishiSatsangi.com  / Art / {{data.name}}">
+		<meta property="og:description" content="{{data.description|striptags}}">
+  {% endblock %} 
+
+{% block body %}
+	{{ parent() }}
+	<!-- {{type|print_r}} -->
+    <div class="clearfix"></div>
+
+		<div class="row" >
+				<h1>{% if type.id!="" %}Edit{% endif %} Activity</h1>
+				<form role="form" method="post" action="/activity/type{% if type.id!="" %}/{{type.id}}{% endif %}" >
+					
+					<div class="form-group ">
+						<label for="quantity">Name</label>
+						<input type="text" class="form-control" name="name" id="name" placeholder="Salad" value="{{type.name}}">
+					</div>
+
+
+					<div class="form-group">
+						<label for="polarity">Polarity</label>
+							<br />
+							<div class="slider slider-horizontal"></div>
+							<input type="hidden" value="{{type.polarity}}" id="polarity" name="polarity" />
+					</div>
+				  
+					<div class="form-group ">
+						<button type="submit" class="btn btn-default">Submit</button>
+					</div>
+
+				</form>
+				{% if type.polarity == null %}
+					{% set polarity = -50 %}
+				{% else %}					
+					{% set polarity = type.polarity %}
+				{% endif %}
+				<script>
+					$(document).ready(function(){
+
+						$('.slider').slider({
+							min: -100,
+							max: 100,
+							step:10,
+							value: {{polarity}}
+						}).
+						on('slide', function(e){
+
+							$('.slider-handle').css('background-image', "none");
+							$('.slider-handle').attr('data-polarity-colorize', e.value);
+							$(document).trigger('polarity-colorize');
+						}).
+						on('slideStop', function(e){
+							$('#polarity').val(e.value);
+						})
+						;
+
+				      	$('.slider-handle').css('background-image', "none");
+				        $('.slider-handle').attr('data-polarity-colorize', {{polarity}});
+				        $(document).trigger('polarity-colorize');
+
+					});
+				</script>
+		</div>
+{% endblock %}
+

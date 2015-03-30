@@ -1,0 +1,236 @@
+<html>
+  <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<title ng-bind="title">{% block title %}trkr{% endblock %}</title>
+  
+  {% block opengraph_meta %}
+    <meta property="og:site_name" content="RishiSatsangi.com - artwerks by Rishi Satsangi">
+    <meta property="og:type" content="website">
+  {% endblock %} 
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<!-- jquery -->
+  <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+	<script src="//assets.artistcontrolbox.com/js/jquery-ui.min.js"></script>
+  <script src="//assets.artistcontrolbox.com/js/url.min.js"></script>
+  <script src="//code.jquery.com/color/jquery.color-2.1.0.min.js"></script>
+  <script src="//cdn.jsdelivr.net/jquery.loadtemplate/1.4.4/jquery.loadTemplate.min.js"></script>
+  <script src="//assets.artistcontrolbox.com/js/autolink-min.js"></script>
+
+
+
+	<!-- bootstrap -->
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+  <link rel="stylesheet" href="/js/lib/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css">
+  <link rel="stylesheet" href="//assets.artistcontrolbox.com/css/bootstrap-slider.css">
+	<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+  <script src="/js/lib/moment.min.js"></script>
+  <script src="/js/lib/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script>
+  <script src="//assets.artistcontrolbox.com/js/bootstrap-slider.js"></script>
+
+	
+  <link rel="stylesheet" href="/css/site.css">
+
+  <!-- google font -->
+<!--   <link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Oleo+Script' rel='stylesheet' type='text/css'> -->
+  <!-- 
+  <script>
+    $(document).ready(function(){
+      $('#myModal').on('hidden.bs.modal', function () {
+          $('#myModalContent').html('');
+      });
+      $(document).on('click', '.acb-thumb', function(){
+        $('#myModalLabel').html($(this).attr('data-title'));
+        $('#myModalContent').html("<img src='" + $(this).attr('data-image-url') + "' class='acb-full-image' id='modal-media' />");
+        $('#myModal .modal-dialog').css('width', $(window).width());
+        $('#myModal .modal-dialog').css('height', $(window).height());
+        $('#myModal').modal();
+      });
+      $(document).on('click', '.acb-youtube-thumb', function(){
+        $('#myModalLabel').html($(this).attr('data-title'));
+        var youtube_id = $.url('?v',$(this).attr('data-youtube-link'));
+        $('#myModalContent').html('<iframe id="ytplayer" type="text/html" width="640" height="360" src="https://www.youtube.com/embed/' + youtube_id + '" frameborder="0" allowfullscreen>');
+        $('#myModal .modal-dialog').css('width', $(window).width());
+        $('#myModal .modal-dialog').css('height', $(window).height());
+        $('#myModal').modal();
+      });
+    });
+  </script>
+   -->
+  {% block headscript %}{% endblock %}
+</head>
+<body>
+<!-- 
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=258016587595327";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+ -->
+<nav class="navbar navbar-default" role="navigation" ng-controller="NavController">
+  <!-- Brand and toggle get grouped for better mobile data-dismissplay -->
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#gallery-navbar-collapse">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <!-- <a class="navbar-brand" href="/">trkr</a> -->
+  </div>
+
+
+
+  <!-- Collect the nav links, forms, and other content for toggling -->
+  {%if user!=""%}
+  <div class="collapse navbar-collapse" id="gallery-navbar-collapse">
+    <ul class="nav navbar-nav">
+
+        <li><a href="/goals/activity" class='btn btn-primary btn-xs'><span class="glyphicon glyphicon-star"></span></a></li>
+        <li><a href="/activity/add" class='btn btn-primary btn-xs'><span class="glyphicon glyphicon-time"></span></a></li>
+
+        <li class="{%if section=="/goals" %}active{%endif%} dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-star"></span> Goals<span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="/goals/activity"><span class="glyphicon glyphicon-time"></span> Track</a></li>
+            <li><a href="/goals"><span class="glyphicon glyphicon-list"></span> View</a></li>
+            <li><a href="/goals/add"><span class="glyphicon glyphicon-bookmark"></span> New</a></li>
+          </ul>
+
+        </li>
+        <li class="{%if section=="/activity" %}active{%endif%} dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-tag"></span> Activities<span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="/activity/add"><span class="glyphicon glyphicon-time"></span> Track</a></li>
+            <li><a href="/activity/type"><span class="glyphicon glyphicon-list"></span> View</a></li>
+            <li><a href="/activity/type/add"><span class="glyphicon glyphicon-tag"></span> New</a></li>
+          </ul>
+
+        </li>
+
+        <li><a href="/activity/report/by/day"><span class="glyphicon glyphicon-stats"></span> Activity Report</a></li>
+        
+        <li class="{%if section=="/account" %}active{%endif%} dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> {{user.email}}<span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="/account/social"><span class="glyphicon glyphicon-link"></span> Social</a></li>
+            <li><a href="/logout"><span class="glyphicon glyphicon-off"></span> Logout</a></li>
+          </ul>
+
+        </li>
+
+    </ul>
+  </div><!-- /.navbar-collapse -->
+  {%endif%}
+</nav>
+
+<div class="container">
+  
+  {% if flash.error != "" %}
+  <div class="alert alert-danger alert-dismissable">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+    <strong>Error!</strong> {{flash.error}}
+  </div>
+  {% endif %}
+
+  {% if flash.success != "" %}
+  <div class="alert alert-success alert-dismissable">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+    <strong>Success!</strong> {{flash.success}}
+  </div>
+  {% endif %}
+	
+  {% block body %}{% endblock %}
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h2 class="modal-title" id="myModalLabel">Modal title</h2>
+      </div>
+      <div class="modal-body" id="myModalContent">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+<!-- <center>&copy; 2014 RishiSatsangi.com</center> -->
+</div>
+<!-- 
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+ -->
+  <!-- Please call pinit.js only once per page -->
+  <!-- 
+  <script type="text/javascript" async src="//assets.pinterest.com/js/pinit.js"></script>
+   -->
+<!-- Place this tag after the last +1 button tag. -->
+<!-- 
+<script type="text/javascript">
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/platform.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>
+ -->
+<!-- 
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-9206010-2', 'rishisatsangi.com');
+  ga('send', 'pageview');
+
+</script>
+ -->
+ <script>
+  $(document).ready(function(){
+    setTimeout(
+      function(){
+        $('div.alert').fadeOut();
+      },
+      3500
+    );
+
+    $(document).on('polarity-colorize', function(){
+      $('[data-polarity-colorize]').each(function(i,e){
+
+        var polarity = $(e).attr('data-polarity-colorize');
+
+        var color = $.Color(
+          polarity <= 0 ? 220 : 0,
+          polarity > 0 ? 210 : 0,
+          0,
+          1
+        );
+
+        var saturation = Math.abs(polarity) / 100;
+
+        color = color.saturation(saturation);
+        color = color.blue(Math.floor(128 * (1-saturation)));
+
+        $(e).css('background-color', color.toRgbaString());
+        // $(e).css('padding', Math.floor(8 * Math.abs(polarity)/100) + 2 + "px");
+
+      });
+    });
+
+    $(document).trigger('polarity-colorize');
+    
+  });
+ </script>
+</body>
+</html>
