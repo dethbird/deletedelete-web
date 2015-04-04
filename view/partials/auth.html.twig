@@ -4,8 +4,6 @@
 
  {% block opengraph_meta %}
   		{{parent()}}
-		<meta property="og:title" content="RishiSatsangi.com  / Art / {{data.name}}">
-		<meta property="og:description" content="{{data.description|striptags}}">
   {% endblock %} 
 
 {% block body %}
@@ -14,7 +12,7 @@
     <div class="row" >
     	<h1>Auth</h1>
     	<br />
-    	<a href="{{googleAuthUrl}}" class="btn btn-primary">Login with Google+</a>
+    	<a href="/social/oauth/google" class="btn btn-primary">Login with Google+</a>
     </div>
 {% endblock %}
 

@@ -1,46 +1,8 @@
-body {
-	font-family: 'Arial', cursive;
-	font-size: 1.4em;
-	color:#888;
-}
-h1,h2,h3,h4,h5,h6,.navbar-brand {
-	font-family: 'Arial', cursive;
-}
-.site-thumbnail {
-	margin-bottom:25px;
-}
 .site-thumbnail img {
 	margin-top:5px;
 	-webkit-box-shadow: 2px 2px 10px rgba(50, 50, 50, 0.57);
 	-moz-box-shadow:    2px 2px 10px rgba(50, 50, 50, 0.57);
 	box-shadow:         2px 2px 10px rgba(50, 50, 50, 0.57);
-}
-.navbar-default .navbar-brand, .navbar-default .navbar-nav>li>a, .dropdown-menu>li>a {
-	color: #888;
-}
-
-.navbar-default .navbar-nav>li>a.btn {
-	color:#fff;
-	padding:8;
-	margin:8;
-}
-.navbar-default .navbar-nav>li>a.btn-primary:hover {
-	background-color: #2d6ca2;
-}
-
-.acb-thumb, .acb-youtube-thumb {
-	cursor: pointer;
-}
-.acb-full-image {
-	display:inline-block;
-	max-width:95%;
-	max-height:95%;
-	-webkit-box-shadow: 2px 2px 10px rgba(50, 50, 50, 0.57);
-	-moz-box-shadow:    2px 2px 10px rgba(50, 50, 50, 0.57);
-	box-shadow:         2px 2px 10px rgba(50, 50, 50, 0.57);
-}
-.modal-body {
-	text-align: center;
 }
 .left {
 	text-align: left;
@@ -49,147 +11,68 @@ h1,h2,h3,h4,h5,h6,.navbar-brand {
 	text-align: right;
 }
 
-/*
-td.quantity {
-	width:30px;
-	text-align:left;
-}
-td.name {
-	width:120px;
-	padding-right:10px;
-}
-td.note {
-	font-size: 0.8em;
-	width:500px;
-}
-td.note small {
-}
-td.time {
-	width:80px;
-	font-size: 0.8em;
-}
-td.action {
-	width:150px;
-}
-td blockquote {
-	font-size: 0.8em;
-}
-*/
 
-
-.recent-activity {
-	position:relative;
-	padding:10px;
-	text-align:center;
+.noselect {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
-.recent-activity-body {
-	text-align:left;
-	padding:15px 10px 25px 25px;
-	max-width:550px;
-	font-size: 0.9em;
-	color:#555;
+textarea#current_document {
+    border: 1px solid #EEEEEE;
+    box-shadow: 1px 1px 0 #DDDDDD;
+    display: block;
+    font-family: 'Indie Flower',cursive;
+    font-size: 22px;
+    line-height: 50px;
+    margin: 2% auto;
+    padding: 11px 0px 0 90px;
+    resize: none;
+    height: 60%;
+    width: 100%;
+
+    background-image: -moz-linear-gradient(top , transparent, transparent 49px,#E7EFF8 0px), -moz-radial-gradient(4% 50%, circle closest-corner, #f5f5f5, #f5f5f5 39%, transparent 0%), -moz-radial-gradient(3.9% 46% , circle closest-corner, #CCCCCC, #CCCCCC 43.5%, transparent 0%); 
+    background-image: -webkit-linear-gradient(top , transparent, transparent 49px,#E7EFF8 0), -webkit-radial-gradient(4% 50%, circle closest-corner, #f5f5f5, #f5f5f5 39%, transparent 0%), -webkit-radial-gradient(3.9% 46%, circle closest-corner, #cccccc, #cccccc 43.5%, transparent 0%);
+
+    -webkit-background-size:  100% 50px;
+    background-size: 100% 50px;
 }
 
-.activity-stamp .date {
-	font-size: 0.7em;
-}
-.activity-stamp .user {
-	font-size: 0.7em;
-	font-weight: bold;
-}
-.recent-activity .img-thumbnail {
-	max-width: 350px;
-	max-height: 350px;
-	left:50%;
-}
-
-.recent-activity .activity-stamp {
-	/* margin:5px 0px 15px 15px; */
-	text-align:left;
-	margin:0px 0px 5px 0px;
-	padding:5px;
-}
-
-.social-icon,
-.recent-activity .activity-icon {
-	display: block;
-	/* background-color:green; */
-	width: 32px;
-	height: 32px;
-	float:left;
-	margin-right: 10px;
-	/* position: absolute;
-	left:-16px;
-	top:-16px; */
-}
+/** SOCIAL ICONS */
 .social-icon {
 	margin-right:10px;
 }
-
-.social-icon.flickr,
-.recent-activity .activity-icon.flickr {
+.social-icon.flickr {
 	background-image:url('http://images.rishisatsangi.com/social-media-icons/flickr-32-32.png');
 }
-.social-icon.instagram,
-.recent-activity .activity-icon.instagram {
+.social-icon.instagram {
 	background-image:url('http://images.rishisatsangi.com/social-media-icons/instagram-32-32.png');
 }
-.social-icon.photo,
-.recent-activity .activity-icon.photo {
+.social-icon.photo {
 	background-image:url('http://images.rishisatsangi.com/social-media-icons/photo-32-32.png');
 }
-.social-icon.twitter,
-.recent-activity .activity-icon.twitter {
+.social-icon.twitter {
 	background-image:url('http://images.rishisatsangi.com/social-media-icons/twitter-32-32.png');
 }
-.social-icon.github,
-.recent-activity .activity-icon.github {
+.social-icon.github {
 	background-image:url('http://images.rishisatsangi.com/social-media-icons/github-32-32.png');
 }
-.social-icon.email,
-.recent-activity .activity-icon.email {
+.social-icon.email {
 	background-image:url('http://images.rishisatsangi.com/social-media-icons/email-32-32.png');
 }
-.social-icon.deviantart,
-.recent-activity .activity-icon.deviantart {
+.social-icon.deviantart {
 	background-image:url('http://images.rishisatsangi.com/social-media-icons/deviantart-32-32.png');
 }
-.social-icon.tumblr,
-.recent-activity .activity-icon.tumblr {
+.social-icon.tumblr {
 	background-image:url('http://images.rishisatsangi.com/social-media-icons/tumblr-32-32.png');
 }
-.social-icon.comment,
-.recent-activity .activity-icon.comment {
+.social-icon.comment {
 	background-image:url('http://images.rishisatsangi.com/social-media-icons/comment-32-32.png');
 }
-.social-icon.foursquare,
-.recent-activity .activity-icon.foursquare {
+.social-icon.foursquare {
 	background-image:url('http://images.rishisatsangi.com/social-media-icons/foursquare-32-32.png');
 }
 
-
-.activity-stamp.well > span.label {
-	float:left;
-	margin-right: 10px;
-}
-
-.activity-stamp.well .action {
-	float:right;
-	position: relative;
-	display: inline;
-}
-
-.recent-activity pre {
-	text-align: left;	
-}
-
-div.container.recent-activity {
-	float:left;
-	text-align:left;
-}
-
-span.title {
-	font-size:1em;
-	text-shadow:-1px -1px 2px #CCC;
-}
 

@@ -9,13 +9,15 @@
 	* \____|__  /   __/|   __/  /____  >\___  >__| |____/|   __/ 
 	*         \/|__|   |__|          \/     \/           |__|    
 	*/
-	session_start();
+	
 	ini_set('error_reporting', E_ALL);
 	ini_set('display_errors', 1);
 	define("APPLICATION_PATH", __DIR__ . "/..");
 	// date_default_timezone_set('America/New_York');
 	date_default_timezone_set('America/New_York');
 
+	ini_set("session.gc_maxlifetime", "3600");
+	session_start();
 
 	global $configs,
 		$session,
@@ -65,7 +67,7 @@
 	$client = new Client($configs['api_url'], array(
 	    "request.options" => array(
 	       "headers" => array(
-		       "auth_token" => isset($_COOKIE['auth_token']) ? $_COOKIE['auth_token'] : false
+		       "auth_token" => isset($_SESSION['auth_token']) ? $_SESSION['auth_token'] : false
 	       	)
 	    )
 	));
@@ -156,31 +158,10 @@
 			global $configs;
 
 			//if no auth token
-			if (!isset($_COOKIE['auth_token'])) {
+			if (!isset($_SESSION['google_access_token'])) {
     			$app->redirect('/auth');
 			}
 
-			//if user not in session
-			if (!isset($_SESSION['user'])) {
-
-				//try to get user from the auth token
-				$response = $client->get("/user/token-auth")->send();
-				$response = json_decode($response->getBody(true));
-
-				if($response->status===true && isset($response->data->id)) {
-					$_SESSION['user'] = $response->data;
-					setcookie("auth_token", $_SESSION['user']->auth_token, time()+60*60*24*30, "/", $configs['cookie.domain'], false, true);
-					$_COOKIE['auth_token'] = $_SESSION['user']->auth_token;
-					$app->redirect('/');
-				} else {
-					//clear cookies and session
-					unset($_SESSION['user']);
-					setcookie("auth_token", null, time() - 3600);
-					unset($_COOKIE['auth_token']);
-					$app->redirect('/auth');
-				}
-			}
-			
 		};
 	};
 
@@ -208,8 +189,7 @@
 
 		//clear cookies and session
 		unset($_SESSION['user']);
-		setcookie("auth_token", "", time() - 3600, "/", $configs['cookie.domain'], false, true);
-		unset($_COOKIE['auth_token']);
+		unset($_SESSION['auth_token']);
 		session_destroy();
 		$app->redirect('/auth');
 
@@ -220,17 +200,31 @@
 	*  VIEWS 
 	*/
 
-	$app->get('/write', $authCheck($app, $client), function () use ($app) {
+	$app->get('/write/new', $authCheck($app, $client), function () use ($app, $client) {
 
-		if($app->request->isAjax()) {
-			echo json_encode(array("farts"));
-		} else {
-		    $app->render('partials/write.twig', array(
-		    	"section"=>"/write",
-		    	"report"=>array(),
-		    	"user" => $_SESSION['user']
-	    	));
-		}
+		$request = $client->post("/write", array(), array("current_document" => ""));
+		$response = $request->send();
+		$app->redirect('/write');
+	});
+
+	$app->get('/write', $authCheck($app, $client), function () use ($app, $client) {
+
+		$response = json_decode($client->get('/user/token-auth')->send()->getBody(true));
+
+	    $app->render('partials/write.twig', array(
+	    	"section"=>"/write",
+	    	"current_document"=>$response->data->current_document,
+	    	"date_updated"=>$response->data->date_updated,
+	    	"user" => $_SESSION['user']
+    	));
+	});
+
+	$app->POST('/write', $authCheck($app, $client), function () use ($app, $client) {
+
+		$request = $client->post("/write", array(), $app->request->params());
+		$response = $request->send();
+		echo $response->getBody(true);
+
 	});
 
 
@@ -247,12 +241,8 @@
 	/**
 	*  OAUTH AUTH LINK 
 	*/
-	$app->get('/social/auth/google', function () use ($app, $client, $googleClient) {
-		$token = $flickrClient->requestRequestToken();
-		$oauth_token = $token->getAccessToken();
-		$secret = $token->getAccessTokenSecret();
-		$url = $flickrClient->getAuthorizationUri(array('oauth_token' => $oauth_token, 'perms' => 'read'));
-		header('Location: '.$url);
+	$app->get('/social/oauth/google', function () use ($app, $client, $googleClient) {
+		header('Location: '.$googleClient->createAuthUrl());
 	});
 
 	
@@ -263,7 +253,7 @@
 	*  OAUTH CALLBACK 
 	*/
 
-	$app->get('/callback/oauth/google', function () use ($app, $client, $googleClient) {
+	$app->get('/social/oauth-callback/google', function () use ($app, $client, $googleClient) {
 
 		global $configs;
 
@@ -295,8 +285,10 @@
 		// echo "<pre>"; print_r($response); echo "</pre>"; die();
 
 		$_SESSION['user'] = $response->data;
-		setcookie("auth_token", $_SESSION['user']->auth_token, time()+60*60*24*30, "/", $configs['cookie.domain'], false, true);
-		$_COOKIE['auth_token'] = $_SESSION['user']->auth_token;
+		$_SESSION['auth_token'] = $response->data->auth_token;
+		$_SESSION['google_access_token'] = $accessToken;
+
+		// echo "<pre>"; print_r($_SESSION); echo "</pre>"; die();
 
 		// add flash message
 		if(isset($_SESSION['user']->is_new)){
@@ -307,9 +299,9 @@
 
 		//create new activity
 		if(isset($_SESSION['user']->is_new)){
-			$app->redirect("/user/new");
+			$app->redirect("/write/new");
 		} else {
-			$app->redirect("/");
+			$app->redirect("/write");
 		}
 
 	});
