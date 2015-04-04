@@ -13,6 +13,8 @@
 <script>
 $(document).ready(function() {
 
+	var autoSaveTimeout = null;
+
 	$('#current_document').each(function(i,e) {
 	 	var e = $(e);
 
@@ -35,6 +37,14 @@ $(document).ready(function() {
 			var html = e.val();
 			e.focus().val("").val(html);
 			e.scrollTop(e[0].scrollHeight);
+
+			if( autoSaveTimeout != null) {
+				clearTimeout(autoSaveTimeout);
+			}
+			autoSaveTimeout = setTimeout(function(){
+				$('#save').trigger('click');
+			}, 300);
+
    		});
  	});
 
