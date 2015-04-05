@@ -171,7 +171,7 @@
 
 	$app->get('/', $authCheck($app, $client), function () use ($app) {
 	    // $app->redirect('/activity/add');
-	    $app->redirect('/goals/activity');
+	    $app->redirect('/write');
 	});
 
 
